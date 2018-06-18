@@ -20,5 +20,6 @@ class Url(db.Model):
 
 
 class UrlSchema(ma.Schema):
-    url = fields.String(required=True)
+    id = fields.Integer()
+    url = db.Column(db.String(250), unique=True)
     short_url = fields.String()

@@ -13,12 +13,9 @@ host = "http://127.0.0.1:5000/"
 
 class UrlResource(Resource):
     def delete(self, id):
-        url = Url.query.filter_by(id=id).delete()
+        Url.query.filter_by(id=id).delete()
         db.session.commit()
-
-        result = url_schema.dump(url).data
-
-        return {'status': 'success', 'data': result}, 200
+        return {'status': 'success'}, 200
 
 
 class UrlListResource(Resource):
@@ -37,14 +34,23 @@ class UrlListResource(Resource):
         if errors:
             return errors, 422
 
-        id = Url.query.filter_by(url=data['url']).first()
+        print data
+
+        url = data['url'].split('//')
+        url = url[1:] if len(url) == 2 else url[:]
+        url = url[0].split('/')
+        url[0] = url[0].split('.')
+        url[0] = ".".join(url[0][1:] if len(url[0]) == 3 else url[0][:])
+        url = "/".join(url)
+
+        id = Url.query.filter_by(url=url).first()
         if not id:
             id = Url.query.order_by('-id').first()
             if not id:
-                id = 1
+                id = 0
             short_url = host + hashids.encode(id + 1)
 
-            data = Url(url=data['url'], short_url=short_url)
+            data = Url(url=url, short_url=short_url)
             db.session.add(data)
             db.session.commit()
         else:
@@ -55,11 +61,10 @@ class UrlListResource(Resource):
 
 class UrlRedirectResource(Resource):
     def get(self, short_url):
-        data = Url.query.filter_by(short_url=host + short_url).one()
-
+        id = hashids.decode(short_url)
+        data = Url.query.filter_by(id=id[0]).one()
         if not data:
             return {'message': 'Short url does not exists'}, 400
         result = url_schema.dump(data).data
 
-        return redirect(result['url'], code=302)
-
+        return redirect("http://www." + result['url'], code=302)
