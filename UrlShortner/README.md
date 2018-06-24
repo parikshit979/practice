@@ -44,15 +44,15 @@ $ APP_SETTINGS=production python run.py
 ### DB Setup
   - Initialize Database
   ```sh
-        APP_SETTINGS=development python migrate.py db int
+        $ APP_SETTINGS=development python migrate.py db int
   ```
   - Migrate Database
   ```sh
-        APP_SETTINGS=development python migrate.py db migrate
+        $ APP_SETTINGS=development python migrate.py db migrate
   ```
   - Apply Upgrade
   ```sh
-        APP_SETTINGS=development python migrate.py db upgrade
+        $ APP_SETTINGS=development python migrate.py db upgrade
   ```
 
 ### Docker
@@ -61,8 +61,8 @@ Url Shortener is very easy to install and deploy in a Docker container.
 By default, the Docker will expose port 5000, so change this within the docker-compose.yml if necessary. When ready, simply use the docker-compose.yml to build the image.
 
 ```sh
-cd UrlShortner
-docker-compose -f docker-compose.yml up --build
+$ cd UrlShortner
+$ docker-compose -f docker-compose.yml up --build
 ```
 This will create the **urlshortner** image and start the service. 
 
