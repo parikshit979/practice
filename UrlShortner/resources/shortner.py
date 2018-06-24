@@ -60,7 +60,7 @@ class UrlListResource(Resource):
 
 
 class UrlRedirectResource(Resource):
-    def get(self, short_url):
+    def post(self, short_url):
         id = hashids.decode(short_url)
         data = Url.query.filter_by(id=id[0]).one()
         if not data:
