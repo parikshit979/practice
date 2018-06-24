@@ -13,7 +13,7 @@ Simple Flask application for Url Shortener.
     ```
  - Delete short url.
     ```sh
-        - DELETE /url/{id}
+    - DELETE /url/{id}
     ```
 - Redirect to original website.
     ```sh
